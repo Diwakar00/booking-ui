@@ -1,0 +1,171 @@
+<template>
+  <BaseModal
+    :show="show"
+    title="Select Custom Date Range"
+    width="500px"
+    :confirm-disabled="!isValid"
+    confirm-text="Apply"
+    @close="handleClose"
+    @confirm="handleConfirm"
+  >
+    <div class="date-content">
+      <div class="date-row">
+        <div class="date-group">
+          <label for="fromDate">From Date:</label>
+          <n-date-picker
+            v-model:value="localFromDate"
+            type="date"
+            placeholder="Select from date"
+            style="width: 100%"
+          />
+        </div>
+
+        <div class="date-group">
+          <label for="toDate">To Date:</label>
+          <n-date-picker
+            v-model:value="localToDate"
+            type="date"
+            placeholder="Select to date"
+            :is-date-disabled="(date) => localFromDate && date < localFromDate"
+            style="width: 100%"
+          />
+        </div>
+      </div>
+
+      <div class="validation-message" v-if="validationError">
+        {{ validationError }}
+      </div>
+    </div>
+  </BaseModal>
+</template>
+
+<script setup>
+import { ref, computed, watch } from "vue";
+import { NDatePicker } from "naive-ui";
+import { format } from "date-fns";
+import BaseModal from "./BaseModal.vue";
+
+const props = defineProps({
+  show: {
+    type: Boolean,
+    default: false,
+  },
+  initialFromDate: {
+    type: String,
+    default: "",
+  },
+  initialToDate: {
+    type: String,
+    default: "",
+  },
+});
+
+const emit = defineEmits(["close", "apply"]);
+
+// Convert string dates to timestamp for n-date-picker
+const localFromDate = ref(
+  props.initialFromDate ? new Date(props.initialFromDate).getTime() : null
+);
+const localToDate = ref(
+  props.initialToDate ? new Date(props.initialToDate).getTime() : null
+);
+
+// Watch for prop changes
+watch(
+  () => props.initialFromDate,
+  (newVal) => {
+    localFromDate.value = newVal ? new Date(newVal).getTime() : null;
+  }
+);
+
+watch(
+  () => props.initialToDate,
+  (newVal) => {
+    localToDate.value = newVal ? new Date(newVal).getTime() : null;
+  }
+);
+
+// Validation
+const validationError = computed(() => {
+  if (!localFromDate.value || !localToDate.value) {
+    return "Both from and to dates are required";
+  }
+
+  if (localFromDate.value > localToDate.value) {
+    return "From date must be before or equal to to date";
+  }
+
+  return "";
+});
+
+const isValid = computed(() => {
+  return localFromDate.value && localToDate.value && !validationError.value;
+});
+
+// Methods
+const handleClose = () => {
+  emit("close");
+};
+
+const handleConfirm = () => {
+  if (isValid.value) {
+    emit("apply", {
+      from: format(new Date(localFromDate.value), "yyyy-MM-dd"),
+      to: format(new Date(localToDate.value), "yyyy-MM-dd"),
+    });
+  }
+};
+
+// Reset form when modal opens
+watch(
+  () => props.show,
+  (isShowing) => {
+    if (isShowing) {
+      localFromDate.value = props.initialFromDate
+        ? new Date(props.initialFromDate).getTime()
+        : null;
+      localToDate.value = props.initialToDate
+        ? new Date(props.initialToDate).getTime()
+        : null;
+    }
+  }
+);
+</script>
+
+<style scoped>
+.date-content {
+  padding: 16px 0;
+}
+
+.date-row {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 16px;
+}
+
+.date-group {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.date-group label {
+  font-weight: 600;
+  color: #374151;
+  font-size: 14px;
+}
+
+.validation-message {
+  color: #ef4444;
+  font-size: 14px;
+  margin-top: 8px;
+}
+
+@media (max-width: 640px) {
+  .date-row {
+    flex-direction: column;
+    gap: 16px;
+  }
+}
+</style>
