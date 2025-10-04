@@ -1,4 +1,4 @@
-import api from "./axios.js";
+import api from "./axios.ts";
 
 // Booking API functions
 export const bookingAPI = {

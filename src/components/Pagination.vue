@@ -70,7 +70,7 @@
 <script setup>
 import { computed, ref, watch, toRefs } from "vue";
 import { NButton, NSelect } from "naive-ui";
-import { useBookingStore } from "../stores/bookingStore.js";
+import { useBookingStore } from "../stores/bookingStore.ts";
 
 const bookingStore = useBookingStore();
 

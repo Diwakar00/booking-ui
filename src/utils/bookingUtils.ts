@@ -1,4 +1,4 @@
-import { STATUS } from "../constants/index.js";
+import { STATUS } from "../constants/index.ts";
 
 // Utility functions for booking operations
 export const calculateStatus = (booking) => {

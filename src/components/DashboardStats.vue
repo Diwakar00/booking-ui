@@ -35,7 +35,7 @@
 <script setup>
 import { ref } from "vue";
 import { NButton } from "naive-ui";
-import { useBookingStore } from "../stores/bookingStore.js";
+import { useBookingStore } from "../stores/bookingStore.ts";
 import BookingModal from "./BookingModal.vue";
 
 const bookingStore = useBookingStore();

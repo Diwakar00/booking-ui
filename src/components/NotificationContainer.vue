@@ -12,7 +12,7 @@
 </template>
 
 <script setup>
-import { useNotificationStore } from "../stores/notificationStore.js";
+import { useNotificationStore } from "../stores/notificationStore.ts";
 import Notification from "./Notification.vue";
 
 const notificationStore = useNotificationStore();

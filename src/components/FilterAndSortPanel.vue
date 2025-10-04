@@ -44,8 +44,8 @@
 import { computed, ref } from "vue";
 import { NSelect, NButton } from "naive-ui";
 import { STATUS } from "../constants/index.ts";
-import { useBookingStore } from "../stores/bookingStore.js";
-import { getTimeFrameLabel } from "../utils/dateRangeUtils.js";
+import { useBookingStore } from "../stores/bookingStore.ts";
+import { getTimeFrameLabel } from "../utils/dateRangeUtils.ts";
 import CustomDateRangeModal from "./CustomDateRangeModal.vue";
 
 // Use the global store

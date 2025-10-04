@@ -1,9 +1,9 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
-import { bookingAPI } from "../api/bookingService.js";
-import { useNotificationStore } from "./notificationStore.js";
-import { calculateBookingStatuses } from "../utils/bookingUtils.js";
-import { calculateDateRange } from "../utils/dateRangeUtils.js";
+import { bookingAPI } from "../api/bookingService.ts";
+import { useNotificationStore } from "./notificationStore.ts";
+import { calculateBookingStatuses } from "../utils/bookingUtils.ts";
+import { calculateDateRange } from "../utils/dateRangeUtils.ts";
 
 export const useBookingStore = defineStore("booking", () => {
   // Booking state

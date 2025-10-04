@@ -10,7 +10,7 @@
 
 <script setup>
 import { onMounted } from "vue";
-import { useBookingStore } from "./stores/bookingStore.js";
+import { useBookingStore } from "./stores/bookingStore.ts";
 import FilterAndSortPanel from "./components/FilterAndSortPanel.vue";
 import DataTable from "./components/DataTable.vue";
 import NotificationContainer from "./components/NotificationContainer.vue";
