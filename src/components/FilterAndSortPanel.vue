@@ -122,6 +122,7 @@ const closeCustomDateModal = () => {
 };
 
 const applyCustomDateRange = async (dateRange) => {
+  showCustomDateModal.value = false;
   await bookingStore.updateCustomDateRange(dateRange);
 };
 </script>

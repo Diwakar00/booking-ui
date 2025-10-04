@@ -3,7 +3,7 @@
     :show="show"
     title="Select Custom Date Range"
     width="500px"
-    :confirm-disabled="!isValid"
+    :confirm-disabled="false"
     confirm-text="Apply"
     @close="handleClose"
     @confirm="handleConfirm"
@@ -86,29 +86,39 @@ watch(
 );
 
 // Validation
-const validationError = computed(() => {
-  if (!localFromDate.value || !localToDate.value) {
-    return "Both from and to dates are required";
-  }
-
-  if (localFromDate.value > localToDate.value) {
-    return "From date must be before or equal to to date";
-  }
-
-  return "";
-});
-
-const isValid = computed(() => {
-  return localFromDate.value && localToDate.value && !validationError.value;
-});
+const validationError = ref("");
 
 // Methods
 const handleClose = () => {
+  validationError.value = "";
   emit("close");
 };
 
+const validateDates = () => {
+  if (!localFromDate.value && !localToDate.value) {
+    validationError.value = "Both from and to dates are required";
+    return false;
+  }
+
+  if (!localFromDate.value) {
+    validationError.value = "from dates is required";
+  }
+
+  if (!localToDate.value) {
+    validationError.value = "To date is required";
+  }
+
+  if (localFromDate.value > localToDate.value) {
+    validationError.value = "From date must be before or equal to to date";
+    return false;
+  }
+
+  validationError.value = "";
+  return true;
+};
+
 const handleConfirm = () => {
-  if (isValid.value) {
+  if (validateDates()) {
     emit("apply", {
       from: format(new Date(localFromDate.value), "yyyy-MM-dd"),
       to: format(new Date(localToDate.value), "yyyy-MM-dd"),

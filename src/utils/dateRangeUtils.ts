@@ -1,7 +1,10 @@
-// Utility functions for calculating date ranges
+import type { TimeFrame, IDateRange } from "../types";
 
 // Calculate date range based on timeFrame selection
-export const calculateDateRange = (timeFrame, customRange = null) => {
+export const calculateDateRange = (
+  timeFrame: TimeFrame,
+  customRange: IDateRange | null = null
+): IDateRange | null => {
   const today = new Date();
 
   switch (timeFrame) {
@@ -50,7 +53,7 @@ export const calculateDateRange = (timeFrame, customRange = null) => {
 };
 
 // Format date to YYYY-MM-DD string
-const formatDate = (date) => {
+const formatDate = (date: Date): string => {
   const year = date.getFullYear();
   const month = String(date.getMonth() + 1).padStart(2, "0");
   const day = String(date.getDate()).padStart(2, "0");
@@ -58,7 +61,10 @@ const formatDate = (date) => {
 };
 
 //Get display label for timeFrame options
-export const getTimeFrameLabel = (timeFrame, customRange = null) => {
+export const getTimeFrameLabel = (
+  timeFrame: TimeFrame,
+  customRange: IDateRange | null = null
+): string => {
   const dateRange = calculateDateRange(timeFrame, customRange);
 
   switch (timeFrame) {

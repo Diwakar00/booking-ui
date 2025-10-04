@@ -74,7 +74,11 @@ import { useBookingStore } from "../stores/bookingStore.ts";
 
 const bookingStore = useBookingStore();
 
-const { page, limit, total, totalPages } = toRefs(bookingStore.pagination);
+// Access pagination values directly from the store ref
+const page = computed(() => bookingStore.pagination.page);
+const limit = computed(() => bookingStore.pagination.limit);
+const total = computed(() => bookingStore.pagination.total);
+const totalPages = computed(() => bookingStore.pagination.totalPages);
 
 // Page size options
 const pageSizeOptions = [
@@ -88,9 +92,12 @@ const pageSizeOptions = [
 const selectedPageSize = ref(limit.value);
 
 // Watch for store pagination changes
-watch(limit, (newSize) => {
-  selectedPageSize.value = newSize;
-});
+watch(
+  () => bookingStore.pagination.limit,
+  (newSize) => {
+    selectedPageSize.value = newSize;
+  }
+);
 
 const startItem = computed(() => {
   return total.value === 0 ? 0 : (page.value - 1) * limit.value + 1;
