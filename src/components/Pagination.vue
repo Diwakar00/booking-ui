@@ -71,8 +71,10 @@
 import { computed, ref, watch, toRefs } from "vue";
 import { NButton, NSelect } from "naive-ui";
 import { useBookingStore } from "../stores/bookingStore.ts";
+import { useBookings } from "../composables/useBookings.ts";
 
 const bookingStore = useBookingStore();
+const { updatePaginationAndFetch } = useBookings();
 
 // Access pagination values directly from the store ref
 const page = computed(() => bookingStore.pagination.page);
@@ -128,13 +130,13 @@ const visiblePages = computed(() => {
 
 const goToPage = async (pageNum) => {
   if (pageNum >= 1 && pageNum <= totalPages.value && pageNum !== page.value) {
-    await bookingStore.updatePagination(pageNum);
+    await updatePaginationAndFetch(pageNum);
   }
 };
 
 const handlePageSizeChange = async (newSize) => {
   selectedPageSize.value = newSize;
-  await bookingStore.updatePagination(null, newSize);
+  await updatePaginationAndFetch(null, newSize);
 };
 </script>
 

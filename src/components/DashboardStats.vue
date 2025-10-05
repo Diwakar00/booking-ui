@@ -36,15 +36,17 @@
 import { ref } from "vue";
 import { NButton } from "naive-ui";
 import { useBookingStore } from "../stores/bookingStore.ts";
+import { useBookings } from "../composables/useBookings.ts";
 import BookingModal from "./BookingModal.vue";
 
 const bookingStore = useBookingStore();
+const { createBooking } = useBookings();
 
 // Create modal state
 const showCreateModal = ref(false);
 
 const handleCreateBooking = async (newBookingData) => {
-  await bookingStore.createBooking(newBookingData);
+  await createBooking(newBookingData);
   closeCreateModal();
 };
 

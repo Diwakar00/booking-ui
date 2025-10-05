@@ -83,6 +83,7 @@
 import { reactive, computed, watch, ref } from "vue";
 import { NInput, NInputNumber, NDatePicker, NForm, NFormItem } from "naive-ui";
 import BaseModal from "./BaseModal.vue";
+import format from "date-fns/format";
 
 const props = defineProps({
   show: Boolean,
@@ -206,10 +207,8 @@ const handleSubmit = async () => {
     const bookingData = {
       name: formData.name,
       value: formData.value,
-      arrivalDate: new Date(formData.arrivalDate).toISOString().split("T")[0],
-      departureDate: new Date(formData.departureDate)
-        .toISOString()
-        .split("T")[0],
+      arrivalDate: format(new Date(formData.arrivalDate), "yyyy-MM-dd"),
+      departureDate: format(new Date(formData.departureDate), "yyyy-MM-dd"),
     };
 
     if (props.isEdit) {

@@ -45,11 +45,18 @@ import { computed, ref } from "vue";
 import { NSelect, NButton } from "naive-ui";
 import { STATUS } from "../constants/index.ts";
 import { useBookingStore } from "../stores/bookingStore.ts";
+import { useBookings } from "../composables/useBookings.ts";
 import { getTimeFrameLabel } from "../utils/dateRangeUtils.ts";
 import CustomDateRangeModal from "./CustomDateRangeModal.vue";
 
 // Use the global store
 const bookingStore = useBookingStore();
+const {
+  updateFiltersAndFetch,
+  updateSortAndFetch,
+  updateCustomDateRangeAndFetch,
+  resetFiltersAndSortAndFetch,
+} = useBookings();
 
 // Modal state
 const showCustomDateModal = ref(false);
@@ -98,18 +105,18 @@ const handleFiltersChange = () => {
   if (bookingStore.filters.timeFrame === "custom") {
     showCustomDateModal.value = true;
   } else {
-    bookingStore.updateFiltersAndFetch(bookingStore.filters);
+    updateFiltersAndFetch(bookingStore.filters);
   }
 };
 
 const handleSortChange = (sortValue) => {
   const [field, order] = sortValue.split("-");
-  bookingStore.updateSortAndFetch(field, order);
+  updateSortAndFetch(field, order);
 };
 
 const resetAll = async () => {
   // Reset all values
-  bookingStore.resetFiltersAndSort();
+  await resetFiltersAndSortAndFetch();
 };
 
 // Custom date modal handlers
@@ -123,7 +130,7 @@ const closeCustomDateModal = () => {
 
 const applyCustomDateRange = async (dateRange) => {
   showCustomDateModal.value = false;
-  await bookingStore.updateCustomDateRange(dateRange);
+  await updateCustomDateRangeAndFetch(dateRange);
 };
 </script>
 

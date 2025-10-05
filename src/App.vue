@@ -10,18 +10,17 @@
 
 <script setup>
 import { onMounted } from "vue";
-import { useBookingStore } from "./stores/bookingStore.ts";
+import { useBookings } from "./composables/useBookings.ts";
 import FilterAndSortPanel from "./components/FilterAndSortPanel.vue";
 import DataTable from "./components/DataTable.vue";
 import NotificationContainer from "./components/NotificationContainer.vue";
 import DashboardStats from "./components/DashboardStats.vue";
 
-// Store
-const bookingStore = useBookingStore();
+const { fetchBookings } = useBookings();
 
 // Load bookings on component mount
 onMounted(async () => {
-  await bookingStore.fetchBookings();
+  await fetchBookings();
 });
 </script>
 

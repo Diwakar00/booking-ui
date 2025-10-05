@@ -48,15 +48,17 @@
 <script setup>
 import { computed, h, toRefs, ref } from "vue";
 import { NDataTable, NButton, NTag } from "naive-ui";
-import { format } from "date-fns";
-import { useBookingStore } from "../stores/bookingStore.js";
+import format from "date-fns/format";
+import { useBookingStore } from "../stores/bookingStore.ts";
+import { useBookings } from "../composables/useBookings.ts";
 import Pagination from "./Pagination.vue";
 import CancelBookingModal from "./CancelBookingModal.vue";
 import BookingModal from "./BookingModal.vue";
 import BaseModal from "./BaseModal.vue";
-import { STATUS } from "../constants/index.js";
+import { STATUS } from "../constants/index.ts";
 
 const bookingStore = useBookingStore();
+const { cancelBooking, updateBooking, deleteBooking } = useBookings();
 
 const { bookings, loading } = toRefs(bookingStore);
 
@@ -78,10 +80,7 @@ const handleCancel = (booking) => {
 };
 
 const handleCancelConfirm = async (cancelData) => {
-  await bookingStore.cancelBooking(
-    cancelData.bookingId,
-    cancelData.refundAmount
-  );
+  await cancelBooking(cancelData.bookingId, cancelData.refundAmount);
   closeCancelModal();
 };
 
@@ -96,10 +95,7 @@ const handleEdit = (booking) => {
 };
 
 const handleEditSave = async (editData) => {
-  await bookingStore.updateBooking(
-    selectedEditBooking.value.bookingId,
-    editData
-  );
+  await updateBooking(selectedEditBooking.value.bookingId, editData);
   closeEditModal();
 };
 
@@ -115,7 +111,7 @@ const handleDelete = (booking) => {
 
 const confirmDelete = async () => {
   if (selectedDeleteBooking.value) {
-    await bookingStore.deleteBooking(selectedDeleteBooking.value.bookingId);
+    await deleteBooking(selectedDeleteBooking.value.bookingId);
     closeDeleteModal();
   }
 };

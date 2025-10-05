@@ -5,7 +5,7 @@
     width="500px"
     :confirm-disabled="false"
     confirm-text="Apply"
-    @close="handleClose"
+    @close="emit('close')"
     @confirm="handleConfirm"
   >
     <div class="date-content">
@@ -42,7 +42,7 @@
 <script setup>
 import { ref, computed, watch } from "vue";
 import { NDatePicker } from "naive-ui";
-import { format } from "date-fns";
+import format from "date-fns/format";
 import BaseModal from "./BaseModal.vue";
 
 const props = defineProps({
@@ -70,29 +70,8 @@ const localToDate = ref(
   props.initialToDate ? new Date(props.initialToDate).getTime() : null
 );
 
-// Watch for prop changes
-watch(
-  () => props.initialFromDate,
-  (newVal) => {
-    localFromDate.value = newVal ? new Date(newVal).getTime() : null;
-  }
-);
-
-watch(
-  () => props.initialToDate,
-  (newVal) => {
-    localToDate.value = newVal ? new Date(newVal).getTime() : null;
-  }
-);
-
 // Validation
 const validationError = ref("");
-
-// Methods
-const handleClose = () => {
-  validationError.value = "";
-  emit("close");
-};
 
 const validateDates = () => {
   if (!localFromDate.value && !localToDate.value) {
@@ -102,10 +81,12 @@ const validateDates = () => {
 
   if (!localFromDate.value) {
     validationError.value = "from dates is required";
+    return false;
   }
 
   if (!localToDate.value) {
     validationError.value = "To date is required";
+    return false;
   }
 
   if (localFromDate.value > localToDate.value) {
@@ -131,12 +112,9 @@ watch(
   () => props.show,
   (isShowing) => {
     if (isShowing) {
-      localFromDate.value = props.initialFromDate
-        ? new Date(props.initialFromDate).getTime()
-        : null;
-      localToDate.value = props.initialToDate
-        ? new Date(props.initialToDate).getTime()
-        : null;
+      localFromDate.value = null;
+      localToDate.value = null;
+      validationError.value = "";
     }
   }
 );
