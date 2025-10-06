@@ -45,7 +45,7 @@ App will be available at: http://localhost:5173
    - Make sure the following code is saved in a file named `docker-compose.yml` in the root of your project:
 
    ```yaml
-   services:
+    services:
    	 backend:
    		 build:
    			 context: ./booking-api
