@@ -107,10 +107,31 @@ const formData = reactive({ ...initialFormData });
 const formRef = ref(null);
 
 const rules = {
-  name: {
-    required: true,
-    message: "Customer name is required",
-  },
+  name: [
+    {
+      required: true,
+      message: "Customer name is required",
+    },
+    {
+      validator: (rule, value) => {
+        if (!value) {
+          return true; // Let the required rule handle empty values
+        }
+        // Regular expression to check for only alphabets and spaces
+        const nameRegex = /^[a-zA-Z\s]+$/;
+        if (!nameRegex.test(value)) {
+          return new Error(
+            "Customer name must contain only alphabets and spaces"
+          );
+        }
+        // Check for consecutive spaces (more than one space in a row)
+        if (/\s{2,}/.test(value.trim())) {
+          return new Error("Customer name cannot have consecutive spaces");
+        }
+        return true;
+      },
+    },
+  ],
   arrivalDate: {
     required: true,
     message: "Arrival date is required",
@@ -205,7 +226,7 @@ const handleSubmit = async () => {
     await formRef.value?.validate();
 
     const bookingData = {
-      name: formData.name,
+      name: formData.name.trim(),
       value: formData.value,
       arrivalDate: format(new Date(formData.arrivalDate), "yyyy-MM-dd"),
       departureDate: format(new Date(formData.departureDate), "yyyy-MM-dd"),
