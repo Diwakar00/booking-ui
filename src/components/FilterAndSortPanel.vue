@@ -141,7 +141,7 @@ const applyCustomDateRange = async (dateRange) => {
   border-radius: 8px;
   margin-bottom: 20px;
   display: flex;
-  gap: 1rem;
+  gap: 16px;
   align-items: end;
   flex-wrap: wrap;
 }

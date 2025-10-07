@@ -37,21 +37,6 @@ h1 {
   text-align: center;
   margin-bottom: 30px;
 }
-</style>
-
-<style scoped>
-.booking-app {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-}
-
-h1 {
-  color: #2c3e50;
-  text-align: center;
-  margin-bottom: 30px;
-}
 
 .app-controls {
   text-align: center;

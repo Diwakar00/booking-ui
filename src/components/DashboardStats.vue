@@ -58,7 +58,7 @@ const closeCreateModal = () => {
 <style scoped>
 .dashboard-content {
   background: #f8f9fa;
-  padding: 1rem;
+  padding: 16px;
   border-radius: 8px;
   margin-bottom: 20px;
   border: 1px solid #e5e7eb;
@@ -79,10 +79,10 @@ const closeCreateModal = () => {
   flex-direction: column;
   gap: 4px;
   background: #ffffff;
-  padding: 0.5rem 1rem;
-  border-radius: 0.25rem;
+  padding: 8px 16px;
+  border-radius: 4px;
   border: 1px solid #e5e7eb;
-  width: 15rem;
+  width: 240px;
 }
 
 .stat-label {
